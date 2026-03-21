@@ -6,7 +6,7 @@ This is a simple algorithm to search for a desired amount of prime numbers insid
 ## Getting Started
 
 You can run it on any IDE that supports JDK 25+ (IntelliJ, VS Code, Eclipse, etc..)
-(You need JDK 25+ for it to function correctly, otherwise you will have to do changes in the main declaration.)
+(You need JDK 25+ for it to function correctly, otherwise you will have to do changes in the main declaration)
 
 <!-- CONTACT -->
 ## Contact
