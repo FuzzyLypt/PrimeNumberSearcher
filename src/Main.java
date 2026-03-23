@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 
 boolean isPrime(int num) {
@@ -27,6 +29,19 @@ void main() {
     int rangeMin;
     int rangeMax;
     int countMax;
+
+    int count = 0;
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+
+    File outputFolder = new File("OUTPUT");
+    if (!outputFolder.exists()) {
+        boolean outputFolderExists = outputFolder.mkdirs();
+        if (!outputFolderExists) {
+            JOptionPane.showMessageDialog(null, "Error: Output directory could not be created.");
+            System.exit(0);
+        }
+    }
 
     do {
         int startMenuOption = JOptionPane.showOptionDialog(null,
@@ -62,17 +77,27 @@ void main() {
             break;
         }
 
-        int count = 0;
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        String dateString = currentDateTime.format(formatter);
+
+        PrintWriter writer;
+        try {
+            writer = new PrintWriter("OUTPUT/prime_numbers" + dateString + ".txt", StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         // Searches for primes within the given range so the user can get the results.
+        writer.println("---//---\n");
         while (count <= countMax && rangeMin <= rangeMax) {
             if (isPrime(rangeMin)) {
-                System.out.println(rangeMin);
+                writer.println(rangeMin);
                 ++count;
-                if (count % 10 == 0) System.out.println();
+                if (count % 10 == 0) writer.println("\n---//---\n");
             }
             ++rangeMin;
         }
+        writer.close();
 
     } while (true);
 
