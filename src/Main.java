@@ -1,4 +1,3 @@
-import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 boolean isPrime(int num) {
@@ -13,7 +12,9 @@ boolean isPrime(int num) {
     return true;
 }
 
+
 int stringToInt(String str) {
+    // Checks if the given value is, indeed, a number.
     try {
         return Integer.parseInt(str);
     } catch (NumberFormatException e) {
@@ -23,35 +24,47 @@ int stringToInt(String str) {
 
 void main() {
 
-    Scanner scanner = new Scanner(System.in);
-
-    int count = 0;
     int rangeMin;
     int rangeMax;
     int countMax;
 
     do {
+        int startMenuOption = JOptionPane.showOptionDialog(null,
+                "Welcome to the Prime Number Searcher.\n\nDo you wish to proceed?",
+                "Prime Number Searcher v1",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                null,
+                0);
+        if (startMenuOption == JOptionPane.CANCEL_OPTION || startMenuOption == JOptionPane.CLOSED_OPTION) {
+            System.exit(0);
+        }
+
         String rangeMinStr = JOptionPane.showInputDialog("\nInsert a minimum range for prime number search: ");
         rangeMin = stringToInt(rangeMinStr);
-        if (rangeMin <= 0) {
+        if (rangeMin <=  0) {
             JOptionPane.showMessageDialog(null, "Invalid operation.");
             break;
         }
 
-        String rangeMaxStr = JOptionPane.showInputDialog("\nInsert a minimum range for prime number search: ");
+        String rangeMaxStr = JOptionPane.showInputDialog("\nInsert a maximum range for prime number search: ");
         rangeMax = stringToInt(rangeMaxStr);
-        if (rangeMax <= 0) {
+        if (rangeMax <= 0 || rangeMax <= rangeMin) {
             JOptionPane.showMessageDialog(null, "Invalid operation.");
             break;
         }
 
-        String countMaxStr = JOptionPane.showInputDialog("\nInsert a minimum range for prime number search: ");
+        String countMaxStr = JOptionPane.showInputDialog("\nInsert the amount of prime numbers to search for: ");
         countMax = stringToInt(countMaxStr) - 1;
         if (countMax <= 0) {
             JOptionPane.showMessageDialog(null, "Invalid operation.");
             break;
         }
 
+        int count = 0;
+
+        // Searches for primes within the given range so the user can get the results.
         while (count <= countMax && rangeMin <= rangeMax) {
             if (isPrime(rangeMin)) {
                 System.out.println(rangeMin);
@@ -60,6 +73,7 @@ void main() {
             }
             ++rangeMin;
         }
+
     } while (true);
 
 }
