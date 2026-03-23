@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 boolean isPrime(int num) {
     if (num <= 1) return false;
@@ -12,6 +13,14 @@ boolean isPrime(int num) {
     return true;
 }
 
+int stringToInt(String str) {
+    try {
+        return Integer.parseInt(str);
+    } catch (NumberFormatException e) {
+        return -1;
+    }
+}
+
 void main() {
 
     Scanner scanner = new Scanner(System.in);
@@ -21,21 +30,36 @@ void main() {
     int rangeMax;
     int countMax;
 
-    System.out.print("\nInsert a minimum range for prime number search: ");
-    rangeMin = scanner.nextInt();
-    System.out.print("\nInsert a maximum range for prime number search: ");
-    rangeMax = scanner.nextInt();
-    System.out.print("\nInsert the max number of primes you want to search for: ");
-    countMax = scanner.nextInt() - 1;
-    System.out.println();
-
-    while (count <= countMax && rangeMin <= rangeMax) {
-        if (isPrime(rangeMin)) {
-            System.out.println(rangeMin);
-            ++count;
-            if (count % 10 == 0) System.out.println();
+    do {
+        String rangeMinStr = JOptionPane.showInputDialog("\nInsert a minimum range for prime number search: ");
+        rangeMin = stringToInt(rangeMinStr);
+        if (rangeMin <= 0) {
+            JOptionPane.showMessageDialog(null, "Invalid operation.");
+            break;
         }
-        ++rangeMin;
-    }
+
+        String rangeMaxStr = JOptionPane.showInputDialog("\nInsert a minimum range for prime number search: ");
+        rangeMax = stringToInt(rangeMaxStr);
+        if (rangeMax <= 0) {
+            JOptionPane.showMessageDialog(null, "Invalid operation.");
+            break;
+        }
+
+        String countMaxStr = JOptionPane.showInputDialog("\nInsert a minimum range for prime number search: ");
+        countMax = stringToInt(countMaxStr) - 1;
+        if (countMax <= 0) {
+            JOptionPane.showMessageDialog(null, "Invalid operation.");
+            break;
+        }
+
+        while (count <= countMax && rangeMin <= rangeMax) {
+            if (isPrime(rangeMin)) {
+                System.out.println(rangeMin);
+                ++count;
+                if (count % 10 == 0) System.out.println();
+            }
+            ++rangeMin;
+        }
+    } while (true);
 
 }
