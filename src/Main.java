@@ -14,7 +14,7 @@ boolean isPrime(int num) {
 
 
 int stringToInt(String str) {
-    // Checks if the given value is, indeed, a number.
+    // Checks if the given value is a number.
     try {
         return Integer.parseInt(str);
     } catch (NumberFormatException e) {
