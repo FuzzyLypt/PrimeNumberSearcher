@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="pgrsqn6:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/pgrsqn6_jar</output-path>
+    <root id="archive" name="pgrsqn6.jar">
+      <element id="module-output" name="pgrsqn6" />
+    </root>
+  </artifact>
+</component>
