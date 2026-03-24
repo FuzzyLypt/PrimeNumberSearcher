@@ -14,7 +14,6 @@ boolean isPrime(int num) {
     return true;
 }
 
-
 int stringToInt(String str) {
     // Checks if the given value is a number.
     try {
@@ -24,13 +23,24 @@ int stringToInt(String str) {
     }
 }
 
-void main() {
-
+int[] userInput() {
     int rangeMin;
     int rangeMax;
     int countMax;
 
-    int count = 0;
+    String rangeMinStr = JOptionPane.showInputDialog("\nInsert a minimum range for prime number search: ");
+    rangeMin = stringToInt(rangeMinStr);
+
+    String rangeMaxStr = JOptionPane.showInputDialog("\nInsert a maximum range for prime number search: ");
+    rangeMax = stringToInt(rangeMaxStr);
+
+    String countMaxStr = JOptionPane.showInputDialog("\nInsert the amount of prime numbers to search for: ");
+    countMax = stringToInt(countMaxStr) - 1;
+
+    return new int[]{rangeMin, rangeMax, countMax};
+}
+
+void main() {
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
 
@@ -56,24 +66,10 @@ void main() {
             System.exit(0);
         }
 
-        String rangeMinStr = JOptionPane.showInputDialog("\nInsert a minimum range for prime number search: ");
-        rangeMin = stringToInt(rangeMinStr);
-        if (rangeMin <=  0) {
-            JOptionPane.showMessageDialog(null, "Invalid operation.");
-            break;
-        }
-
-        String rangeMaxStr = JOptionPane.showInputDialog("\nInsert a maximum range for prime number search: ");
-        rangeMax = stringToInt(rangeMaxStr);
-        if (rangeMax <= 0 || rangeMax <= rangeMin) {
-            JOptionPane.showMessageDialog(null, "Invalid operation.");
-            break;
-        }
-
-        String countMaxStr = JOptionPane.showInputDialog("\nInsert the amount of prime numbers to search for: ");
-        countMax = stringToInt(countMaxStr) - 1;
-        if (countMax <= 0) {
-            JOptionPane.showMessageDialog(null, "Invalid operation.");
+        // rangeMin = 0, rangeMax = 1, countMax = 2
+        int[] input = userInput();
+        if ((input[0] <=  0 && input[1] <= 0  && input[2] <= 0) || input[1] <= input[0]) {
+            JOptionPane.showMessageDialog(null, "Error: Invalid operation.");
             break;
         }
 
@@ -88,14 +84,15 @@ void main() {
         }
 
         // Searches for primes within the given range so the user can get the results.
+        int count = 0;
         writer.println("---//---\n");
-        while (count <= countMax && rangeMin <= rangeMax) {
-            if (isPrime(rangeMin)) {
-                writer.println(rangeMin);
+        while (count <= input[2] && input[0] <= input[1]) {
+            if (isPrime(input[0])) {
+                writer.println(input[0]);
                 ++count;
                 if (count % 10 == 0) writer.println("\n---//---\n");
             }
-            ++rangeMin;
+            ++input[0];
         }
         writer.close();
 
