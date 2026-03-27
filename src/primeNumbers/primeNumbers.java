@@ -62,7 +62,7 @@ public class primeNumbers {
                 null,
                 paneOptions,
                 0);
-        if (menuOption == JOptionPane.CANCEL_OPTION || menuOption == 1) {
+        if (menuOption == -1 || menuOption == 1) {
             System.exit(0);
         }
     }
@@ -125,12 +125,16 @@ public class primeNumbers {
 
             // Searches for primes within the given range so the user can get the results.
             int count = 0;
-            writer.println("---//---\n");
+            int set = 1;
+            writer.println("---/ Set 1 /---\n");
             while (count <= input[2] && input[0] <= input[1]) {
                 if (isPrime(input[0])) {
                     writer.println(input[0]);
                     ++count;
-                    if (count % 10 == 0) writer.println("\n---//---\n");
+                    if (count % 10 == 0) {
+                        ++set;
+                        writer.println("\n---/ Set " + set + " /---\n");
+                    }
                 }
                 ++input[0];
             }
