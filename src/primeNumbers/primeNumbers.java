@@ -1,6 +1,7 @@
 package primeNumbers;
 
 import javax.swing.*;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -53,24 +54,43 @@ public class primeNumbers {
         return new int[] {rangeMin, rangeMax, countMax};
     }
 
-    void menuOption(String optionString, String[] paneOptions) {
-        int menuOption = JOptionPane.showOptionDialog(null,
-                optionString,
-                "Prime Number Searcher v1",
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.INFORMATION_MESSAGE,
-                null,
-                paneOptions,
-                0);
-        if (menuOption == -1 || menuOption == 1) {
-            System.exit(0);
+    int menuOption(String optionString, int menuType) {
+        if (menuType == 0) {
+            int menuOption = JOptionPane.showOptionDialog(null,
+                    optionString,
+                    "Prime Number Searcher v1",
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE,
+                    null,
+                    new String[]{"YES", "EXIT"},
+                    0);
+            if (menuOption == -1 || menuOption == 1) {
+                System.exit(0);
+                return -1;
+            }
+            else return menuOption;
         }
+        else {
+            int menuOption = JOptionPane.showOptionDialog(null,
+                    optionString,
+                    "Prime Number Searcher v1",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE,
+                    null,
+                    new String[]{"YES", "OPEN FILE", "EXIT"},
+                    0);
+            if (menuOption == -1 || menuOption == 2) {
+                System.exit(0);
+                return -1;
+            }
+            else return menuOption;
+        }
+
     }
 
     void main() {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
-        String[] paneOptions = {"YES", "EXIT"};
 
         String startMenuString = "Welcome to the Prime Number Searcher.\n\nDo you wish to proceed?";
 
@@ -94,23 +114,25 @@ public class primeNumbers {
             }
         }
 
-        menuOption(startMenuString, paneOptions);
+        menuOption(startMenuString, 0);
 
         do {
             // rangeMin = 0, rangeMax = 1, countMax = 2
             int[] input = userInput();
             if ((input[0] <=  0 && input[1] <= 0  && input[2] <= 0) || input[1] <= input[0]) {
                 JOptionPane.showMessageDialog(null, "Error: Invalid operation.");
-                menuOption(errorMenuString, paneOptions);
+                menuOption(errorMenuString, 0);
                 continue;
             }
 
             // Output goes to .txt file, and the date is inserted into it's name so no file is overwritten.
             LocalDateTime currentDateTime = LocalDateTime.now();
             String dateString = currentDateTime.format(formatter);
+            File outputFile;
             PrintWriter writer;
             try {
-                writer = new PrintWriter("OUTPUT/prime_numbers" + dateString + ".txt", StandardCharsets.UTF_8);
+                outputFile = new File("OUTPUT/prime_numbers" + dateString + ".txt");
+                writer = new PrintWriter(outputFile, StandardCharsets.UTF_8);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -127,11 +149,12 @@ public class primeNumbers {
             int count = 0;
             int set = 1;
             writer.println("---/ Set 1 /---\n");
+            // rangeMin = 0, rangeMax = 1, countMax = 2
             while (count <= input[2] && input[0] <= input[1]) {
                 if (isPrime(input[0])) {
                     writer.println(input[0]);
                     ++count;
-                    if (count % 10 == 0) {
+                    if (count % 10 == 0 && count <= input[2] && input[0] <= input[1]) {
                         ++set;
                         writer.println("\n---/ Set " + set + " /---\n");
                     }
@@ -140,7 +163,17 @@ public class primeNumbers {
             }
             writer.close();
             processingDialog.dispose();
-            menuOption(endMenuString, paneOptions);
+            int finalOption;
+            do {
+                finalOption = menuOption(endMenuString, 1);
+                if (finalOption == 1) {
+                    try {
+                        Desktop.getDesktop().open(outputFile);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            } while (finalOption == 1);
         } while (true);
 
     }
